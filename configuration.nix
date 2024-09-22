@@ -182,6 +182,7 @@
     unrar
     wine
     winetricks
+    multiviewer-for-f1
 
     # Development
     libgcc
