@@ -110,7 +110,6 @@
     "com.stremio.Stremio"
     "com.ultimaker.cura"
     "com.uploadedlobster.peek"
-    "com.usebottles.bottles"
     "de.haeckerfelix.Fragments"
     "io.github.f3d_app.f3d"
     "io.github.seadve.Mousai"
@@ -182,6 +181,7 @@
     unrar
     wine
     winetricks
+    bottles
     multiviewer-for-f1
 
     # Development
@@ -230,6 +230,9 @@
       }
     ];
   };
+
+  # Xbox Controller
+  hardware.xone.enable = true;
 
   # NVIDIA
   hardware.graphics.enable = true;
