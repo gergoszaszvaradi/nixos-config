@@ -82,6 +82,14 @@
     wantedBy = [ "multi-user.target" ];
   };
 
+  virtualisation.docker = {
+    enable = true;
+    rootless = {
+      enable = true;
+      setSocketVariable = true;
+    };
+  };
+
   # Enable flatpak
   services.flatpak.enable = true;
   services.flatpak.remotes = [
@@ -156,6 +164,7 @@
   programs.steam.enable = true;
 
   # Add virt-manager
+  virtualisation.libvirtd.enable = true;
   programs.virt-manager.enable = true;
 
   programs.nautilus-open-any-terminal = {
@@ -184,12 +193,25 @@
     bottles
     multiviewer-for-f1
 
+    # GNOME extensions
+    gnomeExtensions.appindicator
+    gnomeExtensions.clipboard-indicator
+    gnomeExtensions.custom-hot-corners-extended
+    gnomeExtensions.dash-to-panel
+    gnomeExtensions.emoji-copy
+    gnomeExtensions.random-wallpaper
+    gnomeExtensions.vitals
+
     # Development
     libgcc
     clang-tools
     cmake
     go
     python3
+    nodePackages.nodejs
+
+    # Other
+    nerdfonts
   ];
 
   # Enable auto-upgrade
@@ -212,19 +234,89 @@
       {
         lockAll = false;
         settings = {
+          "org/gnome/shell" = {
+            app-picker-layout = "'[]'";
+            favorite-apps = "['com.brave.Browser.desktop', 'com.raggesilver.BlackBox.desktop', 'org.gnome.Nautilus.desktop']";
+          };
           "org/gnome/desktop/wm/preferences" = {
-            button-layout = "appmenu:minimize,maximize,close";
+            button-layout = "'appmenu:minimize,maximize,close'";
           };
           "org/gnome/desktop/interface" = {
             clock-show-date = true;
             clock-show-seconds = true;
             clock-show-weekday = true;
-            color-scheme = "prefer-dark";
+            color-scheme = "'prefer-dark'";
             enable-hot-corners = false;
+          };
+          "org/gnome/desktop/app-folders" = {
+            folder-children = "'[]'";
           };
           "org/gnome/desktop/peripherals/keyboard" = {
             numlock-state = true;
             remember-numlock-state = true;
+          };
+          "org/gnome/mutter" = {
+            edge-tiling = true;
+          };
+          "org/gnome/nautilus/preferences" = {
+            default-folder-viewer = "'icon-view'";
+            migrated-gtk-settings = true;
+            search-filter-time-type = "'last_modified'";
+          };
+          "com/raggesilver/BlackBox" = {
+            fill-tabs = true;
+            font = "'CaskaydiaCove Nerd Font 11'";
+            headerbar-drag-area = true;
+            remember-window-size = true;
+            terminal-padding = "(uint32 5, uint32 5, uint32 5, uint32 5)";
+            theme-dark = "'Japanesque'";
+            window-height = "uint32 753";
+            window-width = "uint32 1320";
+          };
+          "com/github/stunkymonkey/nautilus-open-any-terminal" = {
+            terminal = "'blackbox'";
+          };
+          "org/gnome/shell/extensions/appindicator" = {
+            legacy-tray-enabled = false;
+          };
+          "org/gnome/shell/extensions/custom-hot-corners-extended/misc" = {
+            panel-menu-enable = false;
+          };
+          "org/gnome/shell/extensions/custom-hot-corners-extended/monitor-0-bottom-left-0" = {
+            action = "'toggle-overview'";
+            barrier-size-h = "i 98";
+          };
+          "org/gnome/shell/extensions/custom-hot-corners-extended/monitor-1-bottom-left-0" = {
+            action = "'toggle-overview'";
+            barrier-size-h = "i 98";
+          };
+          "org/gnome/shell/extensions/dash-to-panel" = {
+            panel-element-positions-monitors-sync = true;
+            panel-anchors = "'{\"0\":\"MIDDLE\",\"1\":\"MIDDLE\"}'";
+            panel-element-positions="'{\"0\":[{\"element\":\"showAppsButton\",\"visible\":false,\"position\":\"stackedTL\"},{\"element\":\"activitiesButton\",\"visible\":true,\"position\":\"stackedTL\"},{\"element\":\"leftBox\",\"visible\":true,\"position\":\"stackedTL\"},{\"element\":\"taskbar\",\"visible\":false,\"position\":\"stackedTL\"},{\"element\":\"centerBox\",\"visible\":false,\"position\":\"stackedBR\"},{\"element\":\"dateMenu\",\"visible\":true,\"position\":\"centerMonitor\"},{\"element\":\"rightBox\",\"visible\":true,\"position\":\"stackedBR\"},{\"element\":\"systemMenu\",\"visible\":true,\"position\":\"stackedBR\"},{\"element\":\"desktopButton\",\"visible\":false,\"position\":\"stackedBR\"}],\"1\":[{\"element\":\"showAppsButton\",\"visible\":false,\"position\":\"stackedTL\"},{\"element\":\"activitiesButton\",\"visible\":true,\"position\":\"stackedTL\"},{\"element\":\"leftBox\",\"visible\":true,\"position\":\"stackedTL\"},{\"element\":\"taskbar\",\"visible\":false,\"position\":\"stackedTL\"},{\"element\":\"centerBox\",\"visible\":false,\"position\":\"stackedBR\"},{\"element\":\"dateMenu\",\"visible\":true,\"position\":\"centerMonitor\"},{\"element\":\"rightBox\",\"visible\":true,\"position\":\"stackedBR\"},{\"element\":\"systemMenu\",\"visible\":true,\"position\":\"stackedBR\"},{\"element\":\"desktopButton\",\"visible\":false,\"position\":\"stackedBR\"}]}'";
+            panel-positions="'{\"0\":\"TOP\",\"1\":\"TOP\"}'";
+            panel-sizes = "'{\"0\":32,\"1\":32}'";
+          };
+          "org/gnome/shell/extensions/space-iflow-randomwallpaper" = {
+            auto-fetch = false;
+            change-type = "i 2";
+            sources = "['1726986491471']";
+            fetch-on-startup = true;
+            hide-panel-icon = true;
+          };
+          "org/gnome/shell/extensions/space-iflow-randomwallpaper/sources/general/1726986491471" = {
+            name = "'Wallpapers'";
+            type = "i 4";
+          };
+          "org/gnome/shell/extensions/space-iflow-randomwallpaper/sources/localFolder/1726986491471" = {
+            folder = "'/home/gergoszaszvaradi/Pictures/Wallpapers'";
+          };
+          "org/gnome/shell/extensions/vitals" = {
+            hot-sensors="['_processor_usage_', '_memory_usage_', '__temperature_avg__', '_gpu#1_utilization_', '_gpu#1_memory_utilization_', '_gpu#1_temperature_']";
+            show-fan = false;
+            show-gpu = true;
+            show-network = false;
+            show-voltage = false;
           };
         };
       }
