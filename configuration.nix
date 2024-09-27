@@ -180,6 +180,7 @@
     fzf
     ripgrep
     lm_sensors
+    xwaylandvideobridge
     solaar
     nautilus
     gnome-system-monitor
@@ -203,6 +204,7 @@
     gnomeExtensions.vitals
 
     # Development
+    gnumake
     libgcc
     clang-tools
     cmake
@@ -213,6 +215,13 @@
     # Other
     nerdfonts
   ];
+
+  # Garbage collection
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 7d";
+  };
 
   # Enable auto-upgrade
   system.autoUpgrade = {
